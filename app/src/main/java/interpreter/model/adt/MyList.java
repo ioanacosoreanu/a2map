@@ -1,4 +1,4 @@
-package model.adt;
+package interpreter.model.adt;
 
 import interpreter.exceptions.ADTException;
 import java.util.ArrayList;
