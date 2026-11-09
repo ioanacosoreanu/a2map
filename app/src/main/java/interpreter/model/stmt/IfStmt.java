@@ -10,7 +10,6 @@ import interpreter.model.value.IValue;
 public record IfStmt(IExp cond, IStmt thenS, IStmt elseS) implements IStmt {
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        // 1. Calculăm condiția
         IValue condValue = cond.eval(state.getSymTable());
 
         if (!(condValue instanceof BoolValue(boolean b))) {
@@ -18,9 +17,9 @@ public record IfStmt(IExp cond, IStmt thenS, IStmt elseS) implements IStmt {
         }
 
         if (b) {
-            state.getExeStack().push(thenS);// Dacă e true, băgăm then pe stivă
+            state.getExeStack().push(thenS);
         } else {
-            state.getExeStack().push(elseS);// Dacă e false, băgăm else pe stivă
+            state.getExeStack().push(elseS);
         }
 
         return state;
