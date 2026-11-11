@@ -5,32 +5,50 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyDictionary<K, V> implements IDictionary<K, V> {
-    private final Map<K, V> map = new HashMap<>();
+    // map este acum final
+    private final HashMap<K, V> map;
+
+    public MyDictionary() {
+        this.map = new HashMap<>();
+    }
 
     @Override
     public boolean isDefined(K key) {
-        return map.containsKey(key);
+        return this.map.containsKey(key);
     }
 
     @Override
     public V lookup(K key) throws ADTException {
         if (!isDefined(key)) {
-            throw new ADTException("Key '" + key + "' is not defined in dictionary");
+            throw new ADTException("Key " + key + " is not defined.");
         }
-        return map.get(key);
+        return this.map.get(key);
     }
 
     @Override
     public void put(K key, V value) {
-        map.put(key, value);
+        this.map.put(key, value);
     }
 
     @Override
     public void update(K key, V value) throws ADTException {
         if (!isDefined(key)) {
-            throw new ADTException("Cannot update; Key '" + key + "' is not defined");
+            throw new ADTException("Key " + key + " is not defined.");
         }
-        map.put(key, value);
+        this.map.put(key, value);
+    }
+
+    @Override
+    public void remove(K key) throws ADTException {
+        if (!isDefined(key)) {
+            throw new ADTException("Key " + key + " is not defined.");
+        }
+        this.map.remove(key);
+    }
+
+    @Override
+    public Map<K, V> toMap() {
+        return Map.copyOf(this.map);
     }
 
     @Override

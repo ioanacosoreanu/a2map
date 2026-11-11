@@ -29,4 +29,13 @@ public class MyStack<T> implements IStack<T> {
     public String toString() {
         return stack.toString();
     }
+    // --- METODA NOUA PENTRU TEMA A3 ---
+    @Override
+    public java.util.List<T> toList() {
+        // Convertim stiva intr-o lista normala
+        java.util.List<T> list = new java.util.ArrayList<>(this.stack);
+        // O inversam ca sa avem varful stivei pe prima pozitie, fix cum vrea profu'
+        java.util.Collections.reverse(list);
+        return list;
+    }
 }

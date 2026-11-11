@@ -29,4 +29,9 @@ public class MyList<T> implements IList<T> {
     public String toString() {
         return list.toString();
     }
+    @Override
+    public java.util.List<T> toList() {
+        // Returnam pur si simplu o copie a listei
+        return new java.util.ArrayList<>(this.list);
+    }
 }
