@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class Main {
     private static Controller makeController(IStmt stmt) {
-        PrgState prg = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), stmt);
+        PrgState prg = PrgState.of(stmt);
         IRepository repo = new Repository(prg);
         return new Controller(repo, true);
     }

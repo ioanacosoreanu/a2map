@@ -18,7 +18,7 @@ class StmtTest {
         IStmt decl = new VarDeclStmt("v", new IntType());
         IStmt assign = new AssignStmt("v", new ValueExp(new BoolValue(true)));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = PrgState.of(new interpreter.model.stmt.NopStmt());
         assertDoesNotThrow(() -> decl.execute(state));
         assertThrows(StatementException.class, () -> assign.execute(state));
     }
@@ -26,7 +26,7 @@ class StmtTest {
     //int a; a=true; print(a);
     @Test
     void testspecial() {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = PrgState.of(new NopStmt());
         state.getSymTable().put("a", new IntValue(0));
 
         IStmt invalidAssign = new AssignStmt("a", new ValueExp(new interpreter.model.value.BoolValue(true)));
