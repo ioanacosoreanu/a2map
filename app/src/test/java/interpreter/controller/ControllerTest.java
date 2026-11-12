@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     private PrgState run(IStmt program) throws MyException {
         PrgState state = PrgState.of(program);
-        new Controller(new Repository(state), false).allStep(); // false ca să nu umplem consola de printuri la teste
+        new Controller(new Repository(state, "test_log.txt"), false).allStep(); // false ca să nu umplem consola de printuri la teste
         return state;
     }
 

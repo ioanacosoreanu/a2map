@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class Main {
     private static Controller makeController(IStmt stmt) {
         PrgState prg = PrgState.of(stmt);
-        IRepository repo = new Repository(prg);
+        IRepository repo = new Repository(prg, "log.txt");
         return new Controller(repo, true);
     }
 
