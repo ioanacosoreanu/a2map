@@ -3,10 +3,12 @@ package interpreter;
 import interpreter.controller.Controller;
 import interpreter.exceptions.MyException;
 import interpreter.model.PrgState;
-import interpreter.model.adt.MyDictionary;
-import interpreter.model.adt.MyList;
-import interpreter.model.adt.MyStack;
-import interpreter.model.stmt.IStmt;
+import interpreter.model.exp.ValueExp;
+import interpreter.model.exp.VarExp;
+import interpreter.model.stmt.*;
+import interpreter.model.type.IntType;
+import interpreter.model.type.StringType;
+import interpreter.model.value.StringValue;
 import interpreter.repository.IRepository;
 import interpreter.repository.Repository;
 import interpreter.view.Examples;
@@ -14,46 +16,54 @@ import interpreter.view.Examples;
 import java.util.Scanner;
 
 public class Main {
-    private static Controller makeController(IStmt stmt) {
-        PrgState prg = PrgState.of(stmt);
-        IRepository repo = new Repository(prg, "log.txt");
-        return new Controller(repo, true);
-    }
-
     public static void main(String[] args) {
+        // Programul de test pentru fisiere (Pasul 6)
+        IStmt ex4 = new CompStmt(
+                new VarDeclStmt("varf", new StringType()),
+                new CompStmt(new AssignStmt("varf", new ValueExp(new StringValue("test.in"))),
+                        new CompStmt(new OpenRFileStmt(new VarExp("varf")),
+                                new CompStmt(new VarDeclStmt("varc", new IntType()),
+                                        new CompStmt(new ReadFileStmt(new VarExp("varf"), "varc"),
+                                                new CompStmt(new PrintStmt(new VarExp("varc")),
+                                                        new CompStmt(new ReadFileStmt(new VarExp("varf"), "varc"),
+                                                                new CompStmt(new PrintStmt(new VarExp("varc")),
+                                                                        new CloseRFileStmt(new VarExp("varf"))))))))));
+
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("\nTOY LANGUAGE MENU");
-            System.out.println("1. Run Example 1: int v; v=2; print(v)");
-            System.out.println("2. Run Example 2: int a; int b; a=2+3*5; b=a+1; print(b)");
-            System.out.println("3. Run Example 3: bool a; int v; a=true; (if a then v=2 else v=3); print(v)");
-            System.out.println("0. Exit");
-            System.out.print("Select an option: ");
+        System.out.println("Alege un exemplu:");
+        System.out.println("1. Exemplul 1");
+        System.out.println("2. Exemplul 2");
+        System.out.println("3. Exemplul 3");
+        System.out.println("4. Exemplul 4 (Fisiere - test.in)");
 
-            String option = scanner.nextLine();
-            Controller ctrl = null;
+        String choice = scanner.nextLine();
+        Controller ctrl = null;
 
-            if (option.equals("1")) {
-                ctrl = makeController(Examples.EX1);
-            } else if (option.equals("2")) {
-                ctrl = makeController(Examples.EX2);
-            } else if (option.equals("3")) {
-                ctrl = makeController(Examples.EX3);
-            } else if (option.equals("0")) {
-                System.out.println("Exiting");
-                break;
-            } else {
-                System.out.println(" Try again.");
-                continue;
-            }
+        if (choice.equals("1")) {
+            PrgState prg = PrgState.of(Examples.EX1);
+            IRepository repo = new Repository(prg, "log1.txt");
+            ctrl = new Controller(repo, true);
+        } else if (choice.equals("2")) {
+            PrgState prg = PrgState.of(Examples.EX2);
+            IRepository repo = new Repository(prg, "log2.txt");
+            ctrl = new Controller(repo, true);
+        } else if (choice.equals("3")) {
+            PrgState prg = PrgState.of(Examples.EX3);
+            IRepository repo = new Repository(prg, "log3.txt");
+            ctrl = new Controller(repo, true);
+        } else if (choice.equals("4")) {
+            PrgState prg = PrgState.of(ex4);
+            IRepository repo = new Repository(prg, "log4.txt");
+            ctrl = new Controller(repo, true);
+        } else {
+            System.out.println("Optiune invalida!");
+            return;
+        }
 
-            try {
-                ctrl.allStep();
-            } catch (MyException e) {
-                System.out.println("\nExecution Error: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println("\nUnexpected Error: " + e.getMessage());
-            }
+        try {
+            ctrl.allStep();
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
