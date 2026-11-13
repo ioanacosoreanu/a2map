@@ -13,22 +13,22 @@ public record CloseRFileStmt(IExp exp) implements IStmt {
         var symTable = state.getSymTable();
         var fileTable = state.getFileTable();
 
-        // 1. Evaluam expresia ca sa aflam numele fisierului
+        //  evaluam expresia ca sa aflam numele fisierului
         var val = exp.eval(symTable);
         if (!(val instanceof StringValue fileName)) {
             throw new MyException("closeRFile: " + exp + " is not a string");
         }
 
-        // 2. Verificam daca e in FileTable (daca e deschis macar)
+
         if (!fileTable.isDefined(fileName)) {
             throw new MyException("closeRFile: file " + fileName + " is not open");
         }
 
-        // 3. Luam cititorul, il inchidem folosind comanda de la Java, apoi il stergem din memorie
+       //luam cititorul
         BufferedReader reader = fileTable.lookup(fileName);
         try {
-            reader.close();
-            fileTable.remove(fileName); // Il stergem din FileTable[cite: 5]
+            reader.close();//il inchidem
+            fileTable.remove(fileName); //il stergem
         } catch (IOException e) {
             throw new MyException("closeRFile: cannot close " + fileName + ": " + e.getMessage());
         }

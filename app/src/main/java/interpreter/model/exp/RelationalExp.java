@@ -13,17 +13,17 @@ public record RelationalExp(Relop op, IExp left, IExp right) implements IExp {
         IValue val1 = left.eval(symTable);
         IValue val2 = right.eval(symTable);
 
-        // Verificam daca prima parte e numar intreg
+
         if (!(val1 instanceof IntValue(int n1))) {
-            throw new MyException("first operand is not an integer"); // Foloseste ExpressionException daca ai clasa asta
+            throw new MyException("first operand is not an integer");
         }
 
-        // Verificam daca a doua parte e numar intreg
+
         if (!(val2 instanceof IntValue(int n2))) {
             throw new MyException("second operand is not an integer");
         }
 
-        // Returnam un rezultat Boolean in functie de operatorul ales
+
         return new BoolValue(switch (op) {
             case LT -> n1 < n2;
             case LE -> n1 <= n2;

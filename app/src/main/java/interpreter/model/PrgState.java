@@ -11,8 +11,9 @@ public class PrgState {
     private final IDictionary<String, IValue> symTable;
     private final IList<IValue> out;
     private final IDictionary<StringValue, BufferedReader> fileTable;
-    private final IStmt originalProgram;
+    private final IStmt originalProgram; //memoram starea initiala a programului
 
+    //constructor
     public PrgState(IStack<IStmt> exeStack, IDictionary<String, IValue> symTable,
                     IList<IValue> out, IDictionary<StringValue, BufferedReader> fileTable,
                     IStmt program) {
@@ -22,11 +23,12 @@ public class PrgState {
         this.fileTable = fileTable;
         this.originalProgram = program;
 
+        //punem tot porgramul pe stiva ca sa fie gata de rulare
         if (program != null) {
             this.exeStack.push(program);
         }
     }
-
+    //metoda construieste prgstate
     public static PrgState of(IStmt program) {
         return new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(),
                 new MyDictionary<>(), program);

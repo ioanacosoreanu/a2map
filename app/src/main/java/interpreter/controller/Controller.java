@@ -27,11 +27,17 @@ public class Controller {
 
     public void allStep() throws MyException {
         PrgState prg = repo.getCrtPrg();
+
+
+        repo.logPrgStateExec(prg);
         display(prg);
 
         while (!prg.getExeStack().isEmpty()) {
             oneStep(prg);
-            display(prg);
+
+            // 2. scrie in fisier starea noua dupa fiecare pas executat
+            repo.logPrgStateExec(prg);
+            display(prg); // afiseaza pe ecran
         }
     }
 
